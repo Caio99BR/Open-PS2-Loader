@@ -14,9 +14,8 @@ else
 	exit 1
 fi
 
-sed -i "s\
-|\
-\t\t\t\t\t<\!-- Automatic Download Section -->\n\
+sed -i "s|\
+\t\t\t\t\t<\!-- Automatic Download Section -->\
 |\
 \t\t\t\t\t<\!-- Automatic Download Section -->\n\
 \t\t\t\t\t<section>\n\
@@ -26,7 +25,7 @@ sed -i "s\
 \t\t\t\t\t\t\t<li><a href='${OPL_UP_LAST_BUILD}' class='button'>OPL Package<\/a><\/li>\n\
 \t\t\t\t\t\t\t<li><a href='${OPL_LANG_UP_LAST_BUILD}' class='button'>Lang Package<\/a><\/li>\n\
 \t\t\t\t\t\t<\/ul>\n\
-\t\t\t\t\t</section>\n\
+\t\t\t\t\t</section>\
 |" index.html
 
 git add index.html
