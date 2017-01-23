@@ -10,6 +10,7 @@
 dist: trusty
 sudo: required
 language: c
+cache: ccache
 
 ## Fix make_changelog.sh
 git:
@@ -23,9 +24,12 @@ before_install:
   ## Save repo name
   - export NEW_REPO_SLUG=$(echo ${TRAVIS_REPO_SLUG} | cut -f 1 -d "/")
 
+  ## Make CCache good to us
+  - export PATH="/usr/lib/ccache:${PATH}"
+
 install:
   ## Dependencies
-  - sudo apt-get install -yqqq gcc-4.4 patch wget make git libc6-dev zlib1g zlib1g-dev libucl1 libucl-dev
+  - sudo apt-get install -yqqq gcc-4.4 patch wget make git libc6-dev zlib1g zlib1g-dev libucl1 libucl-dev ccache
 
 before_script:
   ## Make cleanup, just for prevent anything
