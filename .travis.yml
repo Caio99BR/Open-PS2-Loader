@@ -69,7 +69,7 @@ before_script:
   - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/gsKit/ && make install"
 
   ## ps2dev/PS2Packer
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/ps2-packer/ && make install"
+  - docker run akuhak/new_gcc /bin/bash -c "cd ${TRAVIS_ENV_DIR}/ps2-packer/ && make install"
 
 script:
   ## Go back to opl dir
