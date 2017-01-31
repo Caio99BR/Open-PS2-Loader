@@ -36,7 +36,6 @@ before_install:
 
 install:
   ## Dependencies
-  #- sudo apt-get install -yqqq gcc g++ patch wget make git libc6-dev zlib1g zlib1g-dev libucl1 libucl-dev ccache texinfo diffutils libmpc-dev
 
 before_script:
   ## Make cleanup, just for prevent anything
