@@ -39,66 +39,27 @@ install:
 
 before_script:
   ## Make cleanup, just for prevent anything
-  - docker run akuhak/new_gcc /bin/sh -c "rm -rf ${GSKIT} ${PS2SDK} ${TRAVIS_ENV_DIR}/ps2-packer/ ${TRAVIS_ENV_DIR}/ps2sdk-ports/"
+  - docker run -d akuhak/ps2toolchain:new_gcc sh -c "while true; do sleep 5; done" > container_id
+  - docker exec -it `cat container_id` bash
+
+  ## Clone ps2sdk
+  - git clone https://github.com/uyjulian/ps2sdk && cd /ps2sdk/
+  - git reset --hard origin/uyjworking && git checkout uyjworking
+  - make --silent install
 
   ## Set up the environment
   - export GSKIT=${PS2DEV}/gsKit
-
-  ## Clone all
-  - docker run akuhak/new_gcc /bin/sh -c "git clone --quiet https://github.com/sp193/ps2sdk-ports.git ${TRAVIS_ENV_DIR}/ps2sdk-ports/"
-  - docker run akuhak/new_gcc /bin/sh -c "git clone --quiet https://github.com/ps2dev/gsKit.git ${TRAVIS_ENV_DIR}/gsKit/"
-  - docker run akuhak/new_gcc /bin/sh -c "git clone --quiet https://github.com/ps2dev/ps2-packer.git ${TRAVIS_ENV_DIR}/ps2-packer/"
-
-  #- curl --upload-file /tmp/OPNPS2LD-PS2TOOLCHAIN.log https://transfer.sh/OPNPS2LD-PS2TOOLCHAIN-${NEW_REPO_SLUG}-NIGHTLY${TRAVIS_BUILD_NUMBER}.log
-
-  ## ps2dev/PS2SDKPorts/zlib
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/ps2sdk-ports/zlib/ && make install"
-
-  ## ps2dev/PS2SDKPorts/libpng
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/ps2sdk-ports/libpng/ && make install"
-
-  ## ps2dev/PS2SDKPorts/libjpeg
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/ps2sdk-ports/libjpeg/ && make install"
-
-  ## ps2dev/PS2SDKPorts/freetype
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/ps2sdk-ports/freetype2/ && make install"
-
-
-  ## ps2dev/gsKit
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_ENV_DIR}/gsKit/ && make install"
-
-  ## ps2dev/PS2Packer
-  - docker run akuhak/new_gcc /bin/bash -c "cd ${TRAVIS_ENV_DIR}/ps2-packer/ && make install"
-
-script:
-  ## Go back to opl dir
-  - docker run akuhak/new_gcc /bin/sh -c "cd ${TRAVIS_BUILD_DIR}/"
-
-  ## BUG: If we not call './make_changelog.sh' before 'make', it will always
-  ## build OPL with old REVISION, and make things confuse
-  ##
-  ## Make a new changelog
-  - docker run akuhak/new_gcc /bin/bash -c "./make_changelog.sh"
-
-  ## Hack to prevent '-dirty' flag
-  - docker run akuhak/new_gcc /bin/bash -c "git add -A"
-
-  ## Let's build Open PS2 Loader Release!
-  - docker run akuhak/new_gcc /bin/bash -c "make release LOCALVERSION=${NEW_REPO_SLUG}"
-
-  ## Make the lang pack
-  - docker run akuhak/new_gcc /bin/bash -c "./lng_pack.sh"
-
+  
 after_success:
   ## Export some variables
-  - docker run akuhak/new_gcc /bin/bash -c "export OPL_VERSION=$(make oplversion)"
+  #- docker run akuhak/new_gcc /bin/bash -c "export OPL_VERSION=$(make oplversion)"
   #- docker run akuhak/new_gcc /bin/bash -c "export OPL_UP_LAST_BUILD=$(curl --upload-file ${TRAVIS_BUILD_DIR}/OPNPS2LD-${OPL_VERSION}-${NEW_REPO_SLUG}.ZIP https://transfer.sh/OPNPS2LD-${OPL_VERSION}-${NEW_REPO_SLUG}-NIGHTLY${TRAVIS_BUILD_NUMBER}.zip)"
   #- docker run akuhak/new_gcc /bin/bash -c "export OPL_LANG_UP_LAST_BUILD=$(curl --upload-file ${TRAVIS_BUILD_DIR}/OPNPS2LD_LANGS-${OPL_VERSION}.zip https://transfer.sh/OPNPS2LD_LANGS-${OPL_VERSION}-NIGHTLY${TRAVIS_BUILD_NUMBER}.zip)"
-  - docker run akuhak/new_gcc /bin/bash -c "export OPL_DATE=$(date +%d'/'%m'/'%Y)"
+  #- docker run akuhak/new_gcc /bin/bash -c "export OPL_DATE=$(date +%d'/'%m'/'%Y)"
 
   ## Configure TravisCI git
-  - git config --global user.email "builds@travis-ci.org"
-  - git config --global user.name "Travis-CI"
+  #- git config --global user.email "builds@travis-ci.org"
+  #- git config --global user.name "Travis-CI"
 
   ## Clone my gh-page
   #- git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/Caio99BR/Open-PS2-Loader ${TRAVIS_ENV_DIR}/gh-pages/ > /dev/null
