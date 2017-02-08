@@ -26,7 +26,7 @@ before_install:
   
   ## Get docker image
   - docker pull akuhak/ps2toolchain:new_gcc
-  - docker ps -a
+  - docker ps
   
   ## Save repo name
   - export NEW_REPO_SLUG=$(echo ${TRAVIS_REPO_SLUG} | cut -f 1 -d "/")
