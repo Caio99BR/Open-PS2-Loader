@@ -39,13 +39,12 @@ install:
 
 before_script:
   ## Make cleanup, just for prevent anything
-  - docker run -d akuhak/ps2toolchain:new_gcc sh -c "while true; do sleep 5; done" > container_id
-  - docker exec -it `cat container_id` bash
+  - docker run -d akuhak/ps2toolchain:new_gcc bash -c "while true; do sleep 5; done" > container_id
 
   ## Clone ps2sdk
-  - git clone https://github.com/uyjulian/ps2sdk && cd /ps2sdk/
-  - git reset --hard origin/uyjworking && git checkout uyjworking
-  - make --silent install
+  - docker exec -t `cat container_id` bash -c "git clone https://github.com/uyjulian/ps2sdk; cd /ps2sdk/"
+  - docker exec -t `cat container_id` bash -c "git reset --hard origin/uyjworking; git checkout uyjworking"
+  - docker exec -t `cat container_id` bash -c "make --silent install"
 
   ## Set up the environment
   - export GSKIT=${PS2DEV}/gsKit
