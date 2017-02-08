@@ -43,8 +43,8 @@ before_script:
 
   ## Clone ps2sdk
   - docker exec -t `cat container_id` bash -c "git clone https://github.com/uyjulian/ps2sdk; cd /ps2sdk/"
-  - docker exec -t `cat container_id` bash -c "git reset --hard origin/uyjworking; git checkout uyjworking"
-  - docker exec -t `cat container_id` bash -c "make --silent install"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk/; git reset --hard origin/uyjworking; git checkout uyjworking"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk/; make --silent install"
 
   ## Set up the environment
   - export GSKIT=${PS2DEV}/gsKit
