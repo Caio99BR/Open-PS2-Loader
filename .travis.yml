@@ -42,9 +42,15 @@ before_script:
   - docker run -d akuhak/ps2toolchain:new_gcc bash -c "while true; do sleep 5; done" > container_id
 
   ## Clone ps2sdk
-  - docker exec -t `cat container_id` bash -c "git clone https://github.com/uyjulian/ps2sdk; cd /ps2sdk/"
+  - docker exec -t `cat container_id` bash -c "git clone https://github.com/uyjulian/ps2sdk"
   - docker exec -t `cat container_id` bash -c "cd /ps2sdk/; git reset --hard origin/uyjworking; git checkout uyjworking"
   - docker exec -t `cat container_id` bash -c "cd /ps2sdk/; make --silent install"
+
+  - docker exec -t `cat container_id` bash -c "git clone https://github.com/sp193/ps2sdk-ports"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/zlib/; make install"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/libpng/; make install"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/libjpeg/; make install"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/freetype2/; make install"
 
   ## Set up the environment
   - export GSKIT=${PS2DEV}/gsKit
@@ -67,7 +73,4 @@ after_success:
   ## Let's upload latest build to gh-page!
   #- bash ${TRAVIS_ENV_DIR}/gh-pages/index-download-make.sh
 
-env:
-  global:
-    secure: "4WrTvtqz76DWeeUqiL76rBr71HNswnvvE1T3SQxR3gWq2i89wrM0jJXeS6zsmXGDN/q4knblvuSoMFJH41AMAnKY0fHOxPZmTcN1W5BVbi8AvkrfEMbenqCzP2cWI4IsvPzeii4OaqrmLzdcuOKjqEE9m3Gbg1cvf3pPt8IgKJoDq1S5Wp+cRWv8QTf2T8sX0HK90MUkvvuELE8kWEb3CZgZCjzL7U2Sav2xE6JQh8mICIeH0yvPzoAiFg2LfhqVzH0qtDW/75DxktZBkYPIxdcZhQiykCXK1Lr6ak2E8RNHMhoPo4pYKXDZhTpT1MzjCRlTnqDbvzXdbZ3hsU7B5/oU9P6GJbSOkU3fN/HjJhzwMSAt0/dvwimGQ4mDV7KYqwHV3XbAXsjkYBzIrVhjcdO6vk6ZZkHUIaXlom+2j9RYMRsR8gy4H5broiH38bFJYQCdCjPel3A7Y/vHvQhV/ZjA+YcC4pnohSpkU9kzzAHLPKmjMCHucjd/xbDrBv99Z4TlFUegGBRC5DmSr3YItalaGsq0aaRNIruNHrD1BcD4g8nSVHNTHJYaYHD7mpsnjb7iRlYsao+zVG4eWUpds1qz2rNym/wa5Fq4SZJc1nbC+jIAH2Ek8j+bCs2hFWb5SjrQUoWrMQiSuszM8/RB6Ex6ZlpO9RCxcLY6E+wz97o="
 
