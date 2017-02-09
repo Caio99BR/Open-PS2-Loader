@@ -50,7 +50,7 @@ before_script:
   - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/zlib/; make install"
   - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/libpng/; make install"
   - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/libjpeg/; make install"
-  - docker run akuhak/ps2toolchain:new_gcc bash -c "cd /ps2sdk-ports/freetype2/; make install"
+  - docker exec -t `cat container_id` bash -c "cd /ps2sdk-ports/freetype2/; make install"
 
   ## Set up the environment
   - export GSKIT=${PS2DEV}/gsKit
